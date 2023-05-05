@@ -37,6 +37,7 @@ const question_model = require('./models/qustion_model');
 const contact_query_model = require('./models/contact_query');
 const review_model = require('./models/Review_model');
 const category_model = require('./models/Category_model');
+const tag_model = require('./models/tag_model');
 
 //-------------------------------------------------------------------Password_Mailer--------------------------------------------------------------
 
@@ -150,6 +151,19 @@ app.put("/addCategory" , async (req , res)=>{
     }
 });
 
+app.put("/addTag" , async (req , res)=>{
+    const Category = new tag_model({
+        name : req.body.name,
+    });
+    try{
+        await Category.save();
+        res.send("Done");
+    }
+    catch{
+        console.log("Error");
+    }
+});
+
 //----------------------------------------------------------------Delete_Offer-------------------------------------------------------------------
 
 app.put("/deleteOffers" , (req , res)=>{
@@ -177,6 +191,13 @@ app.get("/getReview" ,async (req , res) => {
 
 app.get("/getCategory" ,async (req , res) => {
     await category_model.find((err , result)=>{
+        if(err){console.log(err)}
+        res.send(result);
+    }).clone();
+});
+
+app.get("/getTag" ,async (req , res) => {
+    await tag_model.find((err , result)=>{
         if(err){console.log(err)}
         res.send(result);
     }).clone();
@@ -414,7 +435,7 @@ app.post('/userMailer' , (req , res ) => {
 app.post('/adminMailer' , (req , res ) => {
     let details = {
         from :"magiccornerin@gmail.com",
-        to: "rishichaary1903@gmail.com",
+        to: "magiccornerin@gmail.com",
         subject : "OTP To verify your magic corner account.",
         text :"Use "+req.body.otp+" To make Mr/Mrs : "+req.body.name+" as Magic Corner Admin.1"
     };
