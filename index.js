@@ -606,10 +606,29 @@ app.get("/allUsers" , ( req , res ) => {
     });
 });
 
+app.put("/User" , ( req , res ) => {
+    console.log(req.body)
+    user_model.find({email:req.body.email} , (err , result) => {
+        if(err){
+            console.log(err);
+        }
+        console.log(result);
+        res.send(result);
+    });
+});
 //--------------------------------------------------------------All_Admins-------------------------------------------------------------------------
 
 app.get("/allAdmins" , ( req , res ) => {
     admin_model.find({projection : {email : true} } , (err , result) => {
+        if(err){
+            console.log(err);
+        }
+        res.send(result);
+    });
+});
+
+app.put("/Admin" , ( req , res ) => {
+    admin_model.find({email:req.body.email} , (err , result) => {
         if(err){
             console.log(err);
         }
