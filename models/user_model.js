@@ -23,16 +23,13 @@ const user_schema = new mongoose.Schema(
             required : true,
         },
         gender : {
-            type : String,
-            required : true,
+            type : String
         },
         age : {
-            type : Number,
-            required : true,
+            type : Number
         },
         dob : {
-            type : String,
-            required : true,
+            type : String
         },
         address : {
             house_no : {

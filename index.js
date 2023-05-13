@@ -455,15 +455,15 @@ app.put("/addUser" , async (req,res) => {
         email : req.body.email ,
         password : req.body.password ,
         mobile_no : req.body.mobile ,
-        gender : req.body.gender ,
-        age : req.body.age ,
-        dob : req.body.dob ,
+        gender : "None" ,
+        age : 3 ,
+        dob : "None" ,
         "address.house_no" : req.body.house ,
         "address.street" : req.body.street ,
         "address.area" : req.body.area ,
         "address.city" : req.body.city ,
         "address.state" : req.body.state ,
-        "address.pin_code" : req.body.pincode ,
+        "address.pin_code" : req.body.pcode ,
     });
     try{
         var mail = req.body.email;
@@ -494,15 +494,15 @@ app.put("/addAdmin" , async (req,res) => {
         email : req.body.email ,
         password : req.body.password ,
         mobile_no : req.body.mobile ,
-        gender : req.body.gender ,
-        age : req.body.age ,
-        dob : req.body.dob ,
+        gender : "None" ,
+        age : 3 ,
+        dob : "None" ,
         "address.house_no" : req.body.house ,
         "address.street" : req.body.street ,
         "address.area" : req.body.area ,
         "address.city" : req.body.city ,
         "address.state" : req.body.state ,
-        "address.pin_code" : req.body.pincode ,
+        "address.pin_code" : req.body.pcode ,
     });
     try{
         var mail = req.body.email;
@@ -612,7 +612,6 @@ app.put("/User" , ( req , res ) => {
         if(err){
             console.log(err);
         }
-        console.log(result);
         res.send(result);
     });
 });
