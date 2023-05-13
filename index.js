@@ -542,6 +542,7 @@ app.put("/addProduct" , async (req , res) => {
             height : req.body.height,
             extras : req.body.infos,
             cod : req.body.cod,
+            dc:req.body.DC,
         }
     );
     try{
@@ -908,6 +909,7 @@ app.put("/updateProducts" , async (req , res) => {
         var newHeight = req.body.height;
         var newCOD = req.body.cod;
         var newInfos = req.body.infos;
+        var newDC = req.body.DC;
         if(newDescription != null){
             await product_model.updateOne({_id : req.body.id} , {$set : {description : newDescription}});
         }
@@ -916,6 +918,9 @@ app.put("/updateProducts" , async (req , res) => {
         }
         if(newOldPrice != 0){
             await product_model.updateOne({_id : req.body.id} , {$set : {oldprice : newOldPrice}});
+        }
+        if(newDC != 0){
+            await product_model.updateOne({_id : req.body.id} , {$set : {dc : newDC}});
         }
         if(newCategory != null){
             await product_model.updateOne({_id : req.body.id} , {$set : {category : newCategory}});
