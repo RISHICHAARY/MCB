@@ -42,40 +42,18 @@ const tag_model = require('./models/tag_model');
 //-------------------------------------------------------------------Password_Mailer--------------------------------------------------------------
 
 app.put('/PasswordMailer' , async (req , res) => {
-    if(req.body.type == 'user'){
-        await user_model.find({email : req.body.email}, (err , result) => {
-            if(err){console.log(err);}
-            let details = {
-                from :"magiccornerin@gmail.com",
-                to: req.body.email,
-                subject : "Password of your magic corner account.",
-                text : "Hi "+result[0].full_name+","+"."+result[0].password+" is your Password."
-            };
-            mailTransporter.sendMail( details , (err) =>{
-                if(err){
-                    console.log(err);
-                }
-            } )
-            res.send("Done");
-        }).clone();
-    }
-    else{
-        await admin_model.find({email : req.body.email}, (err , result) => {
-            if(err){console.log(err);}
-            let details = {
-                from :"magiccornerin@gmail.com",
-                to: req.body.email,
-                subject : "Password of your magic corner account.",
-                text : "Hi "+result[0].full_name+","+"."+result[0].password+" is your Password."
-            };
-            mailTransporter.sendMail( details , (err) =>{
-                if(err){
-                    console.log(err);
-                }
-            } )
-            res.send("Done");
-        }).clone();
-    }
+    let details = {
+        from :"magiccornerin@gmail.com",
+        to: req.body.email,
+        subject : "Password of your magic corner account.",
+        text : "Hi "+req.body.name+","+"."+req.body.pass+" is your Password."
+    };
+    mailTransporter.sendMail( details , (err) =>{
+        if(err){
+            console.log(err);
+        }
+    } )
+    res.send("Done");
 });
 //------------------------------------------------------------------Payment----------------------------------------------------------------------
 
@@ -377,41 +355,19 @@ app.put("/deleteOrder" , (req , res) => {
 
 //------------------------------------------------------------------OTP_Mailer---------------------------------------------------------------------
 
-app.put('/OtpMailer' , async (req , res) => {
-    if(req.body.type == 'user'){
-        await user_model.find({email : req.body.email}, (err , result) => {
-            if(err){console.log(err);}
-            let details = {
-                from :"magiccornerin@gmail.com",
-                to: req.body.email,
-                subject : "OTP To verify your magic corner account.",
-                text : "Hi "+result[0].full_name+", Use "+req.body.otp+" To get your Magic Corner Account Password."
-            };
-            mailTransporter.sendMail( details , (err) =>{
-                if(err){
-                    console.log(err);
-                }
-            })
-            res.send("Done");
-        }).clone();
-    }
-    else{
-        await admin_model.find({email : req.body.email}, (err , result) => {
-            if(err){console.log(err);}
-            let details = {
-                from :"magiccornerin@gmail.com",
-                to: req.body.email,
-                subject : "OTP To verify your magic corner account.",
-                text : "Hi "+result[0].full_name+", Use "+req.body.otp+" To get your Magic Corner Account Password."
-            };
-            mailTransporter.sendMail( details , (err) =>{
-                if(err){
-                    console.log(err);
-                }
-            })
-            res.send("Done");
-        }).clone();
-    }
+app.put('/otpMailer' , async (req , res) => {
+    let details = {
+        from :"magiccornerin@gmail.com",
+        to: req.body.mail,
+        subject : "OTP To verify your magic corner account.",
+        text : "Hi "+req.body.name+","+" Use "+req.body.otp+" To verify your Magic Corner Account."
+    };
+    mailTransporter.sendMail( details , (err) =>{
+        if(err){
+            console.log(err);
+        }
+        res.send("Done")
+    } )
 })
 
 //--------------------------------------------------------------------User_Mailer----------------------------------------------------------------------
@@ -599,7 +555,7 @@ app.get("/getAllWorkshops" , ( req , res ) => {
 //--------------------------------------------------------------All_Users-------------------------------------------------------------------------
 
 app.get("/allUsers" , ( req , res ) => {
-    user_model.find({projection : {email : true} } , (err , result) => {
+    user_model.find( (err , result) => {
         if(err){
             console.log(err);
         }
@@ -619,7 +575,7 @@ app.put("/User" , ( req , res ) => {
 //--------------------------------------------------------------All_Admins-------------------------------------------------------------------------
 
 app.get("/allAdmins" , ( req , res ) => {
-    admin_model.find({projection : {email : true} } , (err , result) => {
+    admin_model.find((err , result) => {
         if(err){
             console.log(err);
         }
