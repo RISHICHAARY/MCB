@@ -101,6 +101,7 @@ app.put("/addOffers" , async (req , res)=>{
 
 app.put("/addReview" , async (req , res)=>{
     const Review = new review_model({
+        image : req.body.image_url,
         name : req.body.name,
         loc : req.body.loc,
         rev : req.body.rev,
