@@ -37,6 +37,7 @@ const question_model = require('./models/qustion_model');
 const contact_query_model = require('./models/contact_query');
 const review_model = require('./models/Review_model');
 const category_model = require('./models/Category_model');
+const mode_model = require('./models/Mode_model');
 const tag_model = require('./models/tag_model');
 
 //-------------------------------------------------------------------Password_Mailer--------------------------------------------------------------
@@ -130,6 +131,20 @@ app.put("/addCategory" , async (req , res)=>{
     }
 });
 
+app.put("/addMode" , async (req , res)=>{
+    const Mode = new mode_model({
+        name : req.body.name,
+        image : req.body.img,
+    });
+    try{
+        await Mode.save();
+        res.send("Done");
+    }
+    catch{
+        console.log("Error");
+    }
+});
+
 app.put("/addTag" , async (req , res)=>{
     const Category = new tag_model({
         name : req.body.name,
@@ -170,6 +185,13 @@ app.get("/getReview" ,async (req , res) => {
 
 app.get("/getCategory" ,async (req , res) => {
     await category_model.find((err , result)=>{
+        if(err){console.log(err)}
+        res.send(result);
+    }).clone();
+});
+
+app.get("/getMode" ,async (req , res) => {
+    await mode_model.find((err , result)=>{
         if(err){console.log(err)}
         res.send(result);
     }).clone();
@@ -520,6 +542,7 @@ app.put("/addWorkshop" , async (req , res) => {
             description : req.body.description,
             newprice : req.body.newprice,
             oldprice : req.body.oldprice,
+            mode : req.body.mode,
             watsapp_grp : req.body.watsapp_grp,
         }
     );
@@ -535,6 +558,15 @@ app.put("/addWorkshop" , async (req , res) => {
 
 app.get("/getAllFeaturedProducts" , ( req , res ) => {
     product_model.find({status: "ON" }, (err , result) => {
+        if(err){
+            console.log(err);
+        }
+        res.send(result);
+    });
+});
+
+app.get("/getProductsUFH" , ( req , res ) => {
+    product_model.find({newprice : { $lte: 500} }, (err , result) => {
         if(err){
             console.log(err);
         }
@@ -641,6 +673,17 @@ app.put("/getProducts" , (req , res) => {
         }
     }
 );
+
+app.put("/getWs" , (req , res) => {
+    workshop_model.find({mode : req.body.Category} ,(err , result) =>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.json(result);
+        }
+    });
+})
 
 app.put("/getProductsSPA" , (req , res) => {
     Selected_Product_Category = req.body.Category;
