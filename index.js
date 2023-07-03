@@ -36,6 +36,7 @@ const admin_model = require('./models/admin_model');
 const question_model = require('./models/qustion_model');
 const contact_query_model = require('./models/contact_query');
 const review_model = require('./models/Review_model');
+const wreview_model = require('./models/WReview_model');
 const category_model = require('./models/Category_model');
 const mode_model = require('./models/Mode_model');
 const tag_model = require('./models/tag_model');
@@ -117,6 +118,23 @@ app.put("/addReview" , async (req , res)=>{
     }
 });
 
+app.put("/addWReview" , async (req , res)=>{
+    const WReview = new wreview_model({
+        image : req.body.image_url,
+        name : req.body.name,
+        loc : req.body.loc,
+        rev : req.body.rev,
+        rating : req.body.rating,
+    });
+    try{
+        await WReview.save();
+        res.send("Done");
+    }
+    catch{
+        console.log("Error");
+    }
+});
+
 app.put("/addCategory" , async (req , res)=>{
     const Category = new category_model({
         name : req.body.name,
@@ -178,6 +196,13 @@ app.get("/getOffers" ,async (req , res) => {
 
 app.get("/getReview" ,async (req , res) => {
     await review_model.find((err , result)=>{
+        if(err){console.log(err)}
+        res.send(result);
+    }).clone();
+});
+
+app.get("/getWReview" ,async (req , res) => {
+    await wreview_model.find((err , result)=>{
         if(err){console.log(err)}
         res.send(result);
     }).clone();
@@ -565,6 +590,16 @@ app.get("/getAllFeaturedProducts" , ( req , res ) => {
     });
 });
 
+app.put("/getAllRelatedProducts" , ( req , res ) => {
+    console.log(req.body);
+    product_model.find({category: req.body.Cata , _id: {$ne: req.body.id} }, (err , result) => {
+        if(err){
+            console.log(err);
+        }
+        res.send(result);
+    });
+});
+
 app.get("/getProductsUFH" , ( req , res ) => {
     product_model.find({newprice : { $lte: 500} }, (err , result) => {
         if(err){
@@ -759,7 +794,6 @@ app.put("/getProductsSPD" , (req , res) => {
         }).sort({newprice : -1});
     }
     else if(Selected_Product_Tag != null && Selected_Product_Category == null){
-        console.log(Selected_Product_Tag);
         product_model.find({tags : Selected_Product_Tag} ,(err , result) =>{
             if(err){
                 console.log(err);
